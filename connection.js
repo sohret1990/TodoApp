@@ -30,5 +30,26 @@ module.exports = {
                     // });
                 });
         });
+    },
+
+    insert: (name, document) => {
+        return new Promise((resolve, reject) => {
+            MongoClient.connect(url, {
+                    useNewUrlParser: true,
+                    useUnifiedTopology: true,
+                    //useCreateIndex: true,
+                    //useFindAndModify: false
+                },
+                function(err, db) {
+                    if (err) throw err;
+                    var dbo = db.db("CMS_DB");
+
+                    dbo.collection(name).insertOne(document).then((err, items)=>{
+                        if(err)
+                        reject(err);
+                        resolve(items);
+                    })
+                });
+        });
     }
 }
